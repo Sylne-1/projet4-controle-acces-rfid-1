@@ -1,47 +1,37 @@
-Contrôle d'accès RFID multi-utilisateurs
-Projet n°4 — Système de contrôle d'accès connecté avec journalisation en ligne
+## Contrôle d'accès RFID multi-utilisateurs
+## Projet n°4 — Système de contrôle d'accès connecté avec journalisation en ligne
 
-Étudiant : Sampeur Tom Marc Edouard
+## Étudiant : Sampeur Tom Marc Edouard
 Simulation : Wokwi
 Microcontrôleur : ESP32
 
-Présentation
+## Présentation
 Ce projet est une version connectée et évolutive d'une serrure à code. Il utilise un lecteur RFID MFRC522 pour identifier plusieurs utilisateurs individuellement à partir de leur badge.
 
 Chaque tentative d'accès, qu'elle soit autorisée ou refusée, est enregistrée avec l'identité, l'UID du badge, le statut et la date/heure. Les données sont transmises à Firebase Realtime Database et peuvent être consultées depuis un tableau de bord web.
 
-Le système combine ainsi :
+## Le système combine ainsi :
 
 identification RFID ;
-
 gestion locale des badges sur carte SD ;
-
 affichage OLED ;
-
 commande d'un servomoteur ;
-
 connexion Wi-Fi ;
-
 synchronisation horaire NTP ;
-
 journalisation distante avec Firebase ;
-
 consultation des accès depuis une interface web.
 
-Fonctionnalités
+## Fonctionnalités
 Contrôle d'accès
 Identification individuelle par badge RFID.
 
 Vérification de l'UID dans la liste locale des badges autorisés.
-
 Affichage de l'état AUTORISÉ ou REFUSÉ sur l'écran OLED.
-
 Ouverture du servomoteur pendant 3 secondes pour un utilisateur autorisé.
-
 Gestion des utilisateurs
 La liste des badges autorisés est stockée sur la carte SD.
 
-Depuis le moniteur série :
+## Depuis le moniteur série :
 
 ADD Nom
 permet d'activer le mode d'ajout. Le badge présenté ensuite est associé au nom indiqué.
@@ -62,7 +52,8 @@ autorise
 refuse
 L'heure est obtenue grâce à une synchronisation NTP.
 
-Architecture du système
+## Architecture du système
+   
                  ┌─────────────────────┐
                  │       Badge RFID     │
                  └──────────┬──────────┘
@@ -92,7 +83,7 @@ Architecture du système
                        │  Dashboard    │
                        │     Web       │
                        └───────────────┘
-Composants
+## Les Composants
 Composant	Fonction
 ESP32	Microcontrôleur principal et connexion Wi-Fi
 MFRC522	Lecture des badges RFID
@@ -101,6 +92,7 @@ OLED SSD1306	Affichage du statut d'accès
 Carte SD	Stockage de la liste des badges autorisés
 Firebase Realtime Database	Stockage du journal des accès
 NTP	Synchronisation de la date et de l'heure
+
 Câblage
 MFRC522
 MFRC522	ESP32
@@ -135,7 +127,7 @@ GND	GND
 Simulation Wokwi
 La simulation complète est disponible ici :
 
-Ouvrir le projet sur Wokwi
+## Ouvrir le projet sur Wokwi
 
 Lancer la simulation
 Ouvrir le projet Wokwi.
@@ -148,7 +140,7 @@ Présenter un badge RFID au lecteur.
 
 Observer le résultat sur l'écran OLED et dans le moniteur série.
 
-Fonctionnement
+## Fonctionnement
 Le cycle de fonctionnement est le suivant :
 
 Un badge RFID est présenté au lecteur.
@@ -196,7 +188,7 @@ Entrer :
 LIST
 Le contenu de la liste des badges autorisés est affiché dans le moniteur série.
 
-Firebase Realtime Database
+## Firebase Realtime Database
 Le système utilise Firebase pour enregistrer les événements dans une structure similaire à :
 
 acces/
@@ -218,7 +210,7 @@ L'URL de la base est configurée dans :
 const char* FIREBASE_HOST = "...";
 Pour utiliser une autre base, remplacer cette valeur par l'URL correspondante.
 
-Tableau de bord web
+## Tableau de bord web
 Le fichier :
 
 dashboard/index.html
@@ -227,13 +219,9 @@ permet de consulter les données enregistrées dans Firebase.
 Il affiche notamment :
 
 le nombre total d'accès ;
-
 le nombre d'accès autorisés ;
-
 le nombre d'accès refusés ;
-
 l'historique des accès ;
-
 le nom de l'utilisateur ;
 
 l'UID du badge ;
@@ -246,7 +234,8 @@ les tentatives d'accès refusées.
 
 Le tableau de bord se connecte directement à Firebase Realtime Database et actualise les informations automatiquement.
 
-Installation
+## Installation
+
 1. Bibliothèques
 Les bibliothèques utilisées sont :
 
@@ -262,22 +251,19 @@ SPI
 SD
 Wire
 time
-2. Firebase
+
+## 2. Firebase
+
 Créer un projet dans Firebase Console.
-
 Activer Realtime Database.
-
 Configurer les règles adaptées à l'utilisation du projet.
-
 Copier l'URL de la base.
-
 Renseigner l'URL dans FIREBASE_HOST.
 
 Utiliser la même configuration dans le tableau de bord si nécessaire.
 
-3. Tableau de bord
+## 3. Tableau de bord
 Le fichier dashboard/index.html peut être ouvert localement ou le dossier dashboard/ peut être hébergé, notamment avec GitHub Pages.
-
 Arborescence du projet
 .
 ├── README.md
@@ -302,7 +288,6 @@ Servo	13
 Limites connues
 Talonnage
 La porte reste ouverte pendant une durée fixe de 3 secondes après une validation. Une deuxième personne peut donc suivre un utilisateur autorisé sans présenter son propre badge.
-
 Connexion réseau
 L'envoi vers Firebase nécessite une connexion Wi-Fi fonctionnelle. En cas de coupure réseau, les événements ne sont pas transmis immédiatement au tableau de bord.
 
@@ -316,7 +301,7 @@ Améliorations futures
 Système anti-talonnage
 Ajouter des capteurs de présence, par exemple des capteurs infrarouges ou des HC-SR04, afin de détecter le passage individuel.
 
-Objectifs :
+## Objectifs :
 
 fermer la porte dès que l'utilisateur a franchi le passage ;
 
@@ -334,27 +319,17 @@ Remplacer l'utilisation simple de l'UID par une solution RFID plus sécurisée, 
 
 Technologies utilisées
 ESP32
-
 RFID MFRC522
-
 SPI
-
 I2C
-
 OLED SSD1306
-
 Carte SD
-
 Wi-Fi
-
 NTP
 
-Firebase Realtime Database
-
+## Firebase Realtime Database
 HTML / JavaScript
-
 Wokwi
-
 Code source
 Le programme principal est disponible dans :
 
@@ -367,8 +342,9 @@ Simulation Wokwi : https://wokwi.com/projects/476445924677929985
 
 Firebase Console : https://console.firebase.google.com
 
-Projet
+## Projet
+
 Projet n°4 — Contrôle d'accès RFID multi-utilisateurs avec journal en ligne
 
-Étudiant : Sampeur Tom Marc Edouard
+##  Étudiant : Sampeur Tom Marc Edouard
 
